@@ -1,5 +1,6 @@
 package com.alibou.security.config;
 
+
 import com.alibou.security.auditing.ApplicationAuditAware;
 import com.alibou.security.user.UserRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -27,6 +28,10 @@ public class ApplicationConfig {
     return username -> repository.findByEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
   }
+  @Bean
+  public AuditorAware<Integer> auditorAware() {
+    return new ApplicationAuditAware();
+  }
 
   @Bean
   public AuthenticationProvider authenticationProvider() {
@@ -36,10 +41,6 @@ public class ApplicationConfig {
     return authProvider;
   }
 
-  @Bean
-  public AuditorAware<Integer> auditorAware() {
-    return new ApplicationAuditAware();
-  }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
